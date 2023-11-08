@@ -1,9 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    apiCalling: false,
+    isSpinnerActive: false,
     apiCalled: false,
-    apiFailed: false,
     users: []
 }
 
@@ -11,27 +10,19 @@ const userSlice = createSlice({
     name: "users",
     initialState: initialState,
     reducers: {
-        fetchUsersRequest: (state) => {
-            state.apiCalling = true;
-            state.apiCalled = false;
-            state.apiFailed = false;
+        setIsSpinnerActive: (state, action) => {
+            state.isSpinnerActive = action.payload;
         },
-        fetchUsersSuccess: (state, action) => {
-            state.apiCalling = false;
-            state.apiCalled = true;
-            state.apiFailed = false;
+        setUsers: (state, action) => {
             state.users = action.payload;
         },
-        fetchUsersFailure: (state) => {
-            state.apiCalling = false;
-            state.apiCalled = false;
-            state.apiFailed = true;
-            state.users = [];
+        setApiCalled: (state, action) => {
+            state.apiCalled = action.payload;
         }
     }
 })
 
-export const { fetchUsersRequest, fetchUsersSuccess, fetchUsersFailure } = userSlice.actions;
+export const { setIsSpinnerActive, setUsers, setApiCalled } = userSlice.actions;
 
 export const userSeletor = (state) => state.users;
 

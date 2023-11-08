@@ -1,20 +1,25 @@
-import { call, put, takeLatest } from "@redux-saga/core/effects";
+import { put, takeLeading } from "@redux-saga/core/effects";
 import axios from 'axios';
 
-import { fetchUsersSuccess, fetchUsersFailure } from './slice';
+import { setIsSpinnerActive, setUsers, setApiCalled } from './slice';
 
 function* fetchUersSaga(){
     try {
-        // const response = yield call(() => axios.get("https://reqres.in/api/users?page=2"));
+        yield put(setIsSpinnerActive(true))
         const response = yield axios.get("https://reqres.in/api/users?page=2");
-        yield put(fetchUsersSuccess(response.data.data))
+        yield put(setUsers(response.data.data))
+        yield put(setApiCalled(true))
     }
     catch (error) {
         console.log(error)
-        yield put(fetchUsersFailure())
+        yield put(setUsers([]))
+        yield put(setApiCalled(false))
+    }
+    finally{
+        yield put(setIsSpinnerActive(false))
     }
 }
 
 export function* fetchUsersWatcher(){
-    yield takeLatest("users/fetchUsersRequest", fetchUersSaga);
+    yield takeLeading("FETCH_USERS", fetchUersSaga);
 }

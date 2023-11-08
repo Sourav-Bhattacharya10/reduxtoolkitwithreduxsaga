@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { fetchUsersRequest, userSeletor} from './slice';
+import { fetchUsersRequest } from './actions';
+import { userSeletor} from './slice';
 import logo from './logo.svg';
 import './App.css';
 
